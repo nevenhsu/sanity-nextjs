@@ -2,9 +2,10 @@ import 'server-only'
 
 import { draftMode } from 'next/headers'
 import { client } from './client'
+import { env } from '@/utils/env'
 import type { QueryParams } from '@sanity/client'
 
-export const token = process.env.SANITY_API_READ_TOKEN
+const { token } = env.sanity
 
 const DEFAULT_PARAMS = {} as QueryParams
 const DEFAULT_TAGS = [] as string[]
@@ -25,7 +26,7 @@ export async function sanityFetch<QueryResponse>({
 
   return client.fetch<QueryResponse>(query, params, {
     ...(isDraftMode && {
-      token: token,
+      token,
       perspective: 'previewDrafts',
     }),
     next: {

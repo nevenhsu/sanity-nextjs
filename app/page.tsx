@@ -4,7 +4,7 @@ import DocumentsCount, { query } from '@/components/DocumentsCount'
 import PreviewDocumentsCount from '@/components/PreviewDocumentsCount'
 import { sanityFetch } from '@/utils/sanity/fetch'
 export default async function Home() {
-  const data = await sanityFetch<number>({ query, tags: ['post'] })
+  const data = await sanityFetch<any[]>({ query, tags: [] })
 
   return (
     <LiveQuery
@@ -13,7 +13,7 @@ export default async function Home() {
       initialData={data}
       as={PreviewDocumentsCount}
     >
-      <DocumentsCount data={data} />
+      <DocumentsCount data={data.length} />
     </LiveQuery>
   )
 }

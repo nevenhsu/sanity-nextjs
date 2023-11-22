@@ -1,12 +1,10 @@
-import './globals.css'
+import '@/styles/globals.css'
 
-import { Inter } from 'next/font/google'
 import dynamic from 'next/dynamic'
 import { draftMode } from 'next/headers'
-import { token } from '@/utils/sanity/fetch'
+import { env } from '@/utils/env'
 import type { Metadata } from 'next'
 
-const inter = Inter({ subsets: ['latin'] })
 const PreviewProvider = dynamic(() => import('@/components/PreviewProvider'))
 
 export const metadata: Metadata = {
@@ -15,12 +13,11 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  draftMode().enable()
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         {draftMode().isEnabled ? (
-          <PreviewProvider token={token}>{children}</PreviewProvider>
+          <PreviewProvider token={env.sanity.token}>{children}</PreviewProvider>
         ) : (
           children
         )}
