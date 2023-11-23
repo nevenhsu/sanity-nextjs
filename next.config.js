@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 
-const isProd = process.env.NODE_ENV === "production";
-const compiler = isProd ? { removeConsole: true } : {};
+const isProd = process.env.NODE_ENV === 'production'
+const compiler = isProd ? { removeConsole: true } : {}
 
 const nextConfig = {
-  compiler
-};
+  compiler,
+}
 
-module.exports = nextConfig;
+module.exports = nextConfig

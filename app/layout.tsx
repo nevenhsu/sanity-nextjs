@@ -13,10 +13,12 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const { isEnabled } = draftMode()
+
   return (
     <html lang="en">
       <body>
-        {draftMode().isEnabled ? (
+        {isEnabled ? (
           <PreviewProvider token={env.sanity.token}>{children}</PreviewProvider>
         ) : (
           children

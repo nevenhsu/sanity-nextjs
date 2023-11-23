@@ -1,19 +1,24 @@
-import { draftMode } from 'next/headers'
-import { LiveQuery } from 'next-sanity/preview/live-query'
-import DocumentsCount, { query } from '@/components/DocumentsCount'
-import PreviewDocumentsCount from '@/components/PreviewDocumentsCount'
-import { sanityFetch } from '@/utils/sanity/fetch'
-export default async function Home() {
-  const data = await sanityFetch<any[]>({ query, tags: [] })
+'use client'
+
+import { useLiveQuery } from '@sanity/preview-kit'
+import { groq } from 'next-sanity'
+
+const query = groq`
+  *[_type=='post'] {
+    ...,
+    author->,
+    categories[]->
+  } | order(_createdAt desc)
+`
+
+export default function Home() {
+  const [data] = useLiveQuery<any[]>([], query)
 
   return (
-    <LiveQuery
-      enabled={draftMode().isEnabled}
-      query={query}
-      initialData={data}
-      as={PreviewDocumentsCount}
-    >
-      <DocumentsCount data={data.length} />
-    </LiveQuery>
+    <ul>
+      {data.map(el => (
+        <li key={el._id}>{el.title}</li>
+      ))}
+    </ul>
   )
 }

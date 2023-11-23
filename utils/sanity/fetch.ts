@@ -7,17 +7,14 @@ import type { QueryParams } from '@sanity/client'
 
 const { token } = env.sanity
 
-const DEFAULT_PARAMS = {} as QueryParams
-const DEFAULT_TAGS = [] as string[]
+const DEFAULT_PARAMS: QueryParams = {}
 
 export async function sanityFetch<QueryResponse>({
   query,
   params = DEFAULT_PARAMS,
-  tags = DEFAULT_TAGS,
 }: {
   query: string
   params?: QueryParams
-  tags: string[]
 }): Promise<QueryResponse> {
   const isDraftMode = draftMode().isEnabled
   if (isDraftMode && !token) {
@@ -31,7 +28,6 @@ export async function sanityFetch<QueryResponse>({
     }),
     next: {
       revalidate: isDraftMode ? 0 : false,
-      tags,
     },
   })
 }
