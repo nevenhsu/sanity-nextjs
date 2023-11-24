@@ -2,6 +2,7 @@ import '@/styles/globals.css'
 
 import dynamic from 'next/dynamic'
 import { draftMode } from 'next/headers'
+import { AppProvider } from '@/stores/AppContext'
 import { env } from '@/utils/env'
 import type { Metadata } from 'next'
 
@@ -18,11 +19,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        {isEnabled ? (
-          <PreviewProvider token={env.sanity.token}>{children}</PreviewProvider>
-        ) : (
-          children
-        )}
+        <AppProvider isPreview={isEnabled}>
+          {isEnabled ? (
+            <PreviewProvider token={env.sanity.token}>{children}</PreviewProvider>
+          ) : (
+            children
+          )}
+        </AppProvider>
       </body>
     </html>
   )

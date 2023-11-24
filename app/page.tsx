@@ -1,6 +1,6 @@
 'use client'
 
-import { useLiveQuery } from '@sanity/preview-kit'
+import useQuery from '@/hooks/useQuery'
 import { groq } from 'next-sanity'
 
 const query = groq`
@@ -12,7 +12,7 @@ const query = groq`
 `
 
 export default function Home() {
-  const [data] = useLiveQuery<any[]>([], query)
+  const [data] = useQuery<any[]>([], query)
 
   return (
     <ul>

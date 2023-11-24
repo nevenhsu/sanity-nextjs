@@ -1,23 +1,24 @@
-'use client'
-
 import { groq } from 'next-sanity'
-import { useLiveQuery } from '@sanity/preview-kit'
+import { client } from '@/utils/sanity/client'
+import Blog from '@/components/Blog'
 
-export default function Blog({ params: { slug } }: { params: { slug: string } }) {
-  const query = groq`
-  *[_type=='post' && slug.current == $slug][0]
-  {
-    ...,
-    author->,
-    categories[]->
-  }
-  `
-
-  const [post] = useLiveQuery<any>({}, query, { slug })
-
+export default function BlogPage({ params: { slug } }: { params: { slug: string } }) {
   return (
     <>
-      <p>{post?.title}</p>
+      <Blog slug={slug} />
     </>
   )
+}
+
+export const revalidate = 3600 // revalidate at most every hour
+
+export async function generateStaticParams() {
+  const query = groq`
+  *[_type=='post']
+  {
+    slug
+  }
+  `
+  const results: { slug: { current: string } }[] = await client.fetch(query)
+  return results.map(o => ({ slug: o.slug.current }))
 }
